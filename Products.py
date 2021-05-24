@@ -4,7 +4,7 @@ This class includes shop product and product specifications.
 You should notice that this class makes access to products easier.
 
 
-Authors:
+Authors:fatemeh mohammaddost
 Email:
 
 
