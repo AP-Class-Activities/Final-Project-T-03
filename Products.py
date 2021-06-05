@@ -7,7 +7,7 @@ Authors:fatemeh mohammaddost
 
 Usage:
    1) Create a new product :
-        p= product(ID, product_name, product_Price)
+        p= product(ID, product_name, product_Price, product_discount)
 
    2) Print the product information:    
         print(p)
@@ -19,11 +19,11 @@ class Product:
         self.__name = name
 
         if  Price<=0 :
-            raise ValueError('the Price for a product should be positive')
+            raise ValueError('the Price for a product should be positive.')
         self.__Price = Price
 
         if  discount<0 or discount>=100:
-            raise ValueError('the discount for a product should be in range [0,100)')
+            raise ValueError('the discount for a product should be in range [0,100).')
         self.__discount = discount
     
     #setters and getters
@@ -50,7 +50,7 @@ class Product:
     @Price.setter
     def Price(self,value): 
        if  value<=0 :
-            raise ValueError('the Price for a product should be positive')
+            raise ValueError('the Price for a product should be positive.')
        self.__Price = value
   
     @property
@@ -60,7 +60,7 @@ class Product:
     @discount.setter
     def discount(self,value): 
         if  value<0 or value>=100:
-            raise ValueError('the discount for a products should be in range [0,100)')
+            raise ValueError('the discount for a products should be in range [0,100).')
         self.__discount = value
 
     def __str__(self):
@@ -70,5 +70,4 @@ class Product:
         
 
 x = Product ( 'p123', 'book' , 50000 , -5)
-
 print(x)
