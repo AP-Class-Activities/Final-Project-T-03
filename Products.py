@@ -3,8 +3,6 @@ This is a class defining a products in a shop.
 This class includes shop product and their specifications.
 You should notice that this class makes access to products easier.
 
-Authors:fatemeh mohammaddost
-
 Usage:
    1) Create a new product :
         p= product(ID, product_name, product_Price, product_discount)
