@@ -12,7 +12,7 @@ Usage:
 '''
 
 class Product:
-    def __init__(self, id, name, Price,  discount=0) :
+    def __init__(self, id, name, Price,  discount=0, comment_list=[], score=[]) :
         self.__id = id
         self.__name = name
 
@@ -23,6 +23,12 @@ class Product:
         if  discount<0 or discount>=100:
             raise ValueError('the discount for a product should be in range [0,100).')
         self.__discount = discount
+        self.__comment_list = comment_list
+
+        for i in score:
+            if i <0 or i > 5:
+                raise ValueError('Score should be positive and should not be more than 5.')
+        self.__score = score
     
     #setters and getters
     @property
@@ -60,12 +66,28 @@ class Product:
         if  value<0 or value>=100:
             raise ValueError('the discount for a products should be in range [0,100).')
         self.__discount = value
+    
+    @property
+    def comment_list(self):
+        cm = ''
+        for i in range(0,len(self.__comment_list)-1):
+            cm = cm + self.__comment_list[i] + ', '
+        cm += self.__comment_list[-1]
+        return cm
+    
+    @property
+    def score(self):
+        s = 0
+        for i in self.__score:
+            s += i
+        return s/len(self.__score)
+
 
     def __str__(self):
         new_price=((100-self.discount)*self.Price)/100 
-        return '\n ID: {} \n name: {} \n Price: {}  ==> discount: {}  ==> new Price: {} \n'\
-            .format(self.ID,self.name, self.Price, self.discount,new_price)
-        
+        return '\n ID: {} \n name: {} \n Price: {}  ==> discount: {}  ==> new Price: {} \n Comments: {} \n Score: {} \n'\
+            .format(self.ID,self.name, self.Price, self.discount,new_price, self.comment_list,self.score)
+    
 
-x = Product ( 'p123', 'book' , 50000 , -5)
+x = Product ( 'p123', 'book' , 50000 , 5, ['good','nice'],[3,2])
 print(x)
