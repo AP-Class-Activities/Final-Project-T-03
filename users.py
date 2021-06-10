@@ -1,23 +1,22 @@
-'''
-This class defines users in the main shop. 
-It contains the user's information. 
-Users contains sellers, customers and the users who just visit the main shop.
-The information consists of user's first name, last name, phone number, email, address, postal code, id, password and his/hers electronic wallet.
-This class helps the main shop to access users' information.
-The main shop needs this information to send the products to the customers who have buyed them.
-
-
-Usage:
-    1) Create a new user:
-        u = user(user_first_name, user_last_name, user_phone_number, user_adress, user_postal_code, user_id, user_password, user_electronic_wallet)
-    
-    2) print the user information:
-        print(u)
-
-'''
-
 class user:
-    def __init__(self, first_name, last_name, phone_number, address, postal_code, type, id, password, electronic_wallet = 0):
+    '''
+    This class defines users in the main shop. 
+    It contains the user's information. 
+    Users contains sellers, customers and the users who just visit the main shop.
+    The information consists of user's first name, last name, phone number, email, address, postal code, id, password and his/hers electronic wallet.
+    This class helps the main shop to access users' information.
+    The main shop needs this information to send the products to the customers who have buyed them.
+
+
+    Usage:
+        1) Create a new user:
+            u = user(user_first_name, user_last_name, user_phone_number, user_adress, user_postal_code, user_id, user_password, user_electronic_wallet)
+    
+        2) print the user information:
+            print(u)
+
+    '''
+    def __init__(self, first_name, last_name, phone_number, address, postal_code, password, electronic_wallet = 0, type, id):
         self.__first_name = first_name
         self.__last_name = last_name
 
@@ -31,6 +30,14 @@ class user:
             raise ValueError('The postal code should have 10 digits')
         self.__postal_code = postal_code
 
+        if len(str(password)) < 3 or len(str(password)) > 8:
+            raise ValueError('The password should have between 4 and 8 characters')
+        self.__password = password
+
+        if electronic_wallet < 0:
+            raise ValueError('The electronic_wallet should be positive')
+        self.__electronic_wallet = electronic_wallet
+        
         if type not in ['seller' , 'customer']:
             raise ValueError('type sholdb be seller or customer')
         self.__type = type
@@ -39,14 +46,6 @@ class user:
             raise ValueError('The id should have 6 digits')
         self.__id = id
 
-        if len(str(password)) < 3 or len(str(password)) > 8:
-            raise ValueError('The password should have between 4 and 8 characters')
-        self.__password = password
-
-        if electronic_wallet < 0:
-            raise ValueError('The electronic_wallet should be positive')
-        self.__electronic_wallet = electronic_wallet
-    
     @property
     def first_name(self): 
         return self.__first_name
@@ -90,30 +89,7 @@ class user:
       if value // (10**9) < 0 or value // (10**9) > 10:
             raise ValueError('The postal code should have 10 digits')
       self.__postal_code = value
- 
-    @property
-    def type(self):
-        return self.__type
-
-    @type.setter
-    def type(self,value):
-        if type not in ['seller' , 'customer']:
-            raise ValueError('type sholdb be seller or customer')
-        self.__type = type
-   
-    @property
-    def ID(self): 
-        if self.__type == 'seller':
-            return 'SL'+str(self.__id)
-        elif self.__type == 'customer':
-            return 'CU'+str(self.__id)
-
-    @ID.setter
-    def  ID(self,value):
-        if value // (10**5) < 0 or value // (10**5) > 10:
-            raise ValueError('The id should have 6 digits')
-        self.__id = value
-   
+     
     @property
     def password(self): 
         return self.__password
@@ -134,10 +110,111 @@ class user:
             raise ValueError('The electronic_wallet should be positive')
         self.__electronic_wallet = value
 
+    @property
+    def type(self):
+        return self.__type
+
+    @type.setter
+    def type(self,value):
+        if type not in ['seller' , 'customer']:
+            raise ValueError('type sholdb be seller or customer')
+        self.__type = type
+    @property
+    def ID(self): 
+        if self.__type == 'seller':
+            return 'SL'+str(self.__id)
+        elif self.__type == 'customer':
+            return 'CU'+str(self.__id)
+
+    @ID.setter
+    def  ID(self,value):
+        if value // (10**5) < 0 or value // (10**5) > 10:
+            raise ValueError('The id should have 6 digits')
+        self.__id = value
+ 
     def __str__(self): 
-        return '\n first_name: {}  \n last_name: {}  \n phone_number: {}  \n address: {}  \n postal_code: {}  \n type: {}  \n id: {}  \n password: {}  \n electronic_wallet: {} \n'\
-            .format(self.first_name,self.last_name, self.phone_number, self.address, self.postal_code, self.type,  self.ID, self.password, self.electronic_wallet)
+        return '\n first name: {}  \n last name: {}  \n phone number: {}  \n address: {}  \n postal code: {}  \n password: {}  \n electronic wallet: {}  \n type: {}  \n id: {} \n'\
+            .format(self.first_name,self.last_name, self.phone_number, self.address, self.postal_code, self.password, self.electronic_wallet ,self.type,  self.ID)
 
 
-u = user('Arezu','Kamrani','09121234567','Rasht',1234567890,'seller',123456,456789,1200)
+u = user('Arezu','Kamrani','09121234567','Rasht',1234567890,456789,1200,'seller',123456)
 print(u)
+
+
+from Products import Product
+class customer(user):
+    '''
+    This class defines customers in the main shop.
+    Customer is a user.
+    In this class we can see that each customer has a favorite list and can add products to this list or delete them from it.
+    Each customer has a shopping bag and can add products to or delete them from it.
+    Each customer access to the produts.
+    This class allows each customers to see his/her buy history, favorite list and shopping bag.
+    Each customer will be only able to comment for the produst he/she has buyed.
+
+    Usage:
+        1) Create a new customer:
+           c = customer(first_name, last_name, phone_number, address, postal_code, type, id, password, electronic_wallet, favorite_list, shopping_bag, buy_history)
+        2) Print the customer information:
+           print(c)
+    '''
+    def __init__(self, first_name, last_name, phone_number, address, postal_code, password, electronic_wallet = 0 ,type='', id, favorite_list=[], shopping_bag=[], buy_history=[]):
+        super(customer,self).__init__(first_name, last_name, phone_number, address, postal_code, password, electronic_wallet = 0)
+
+        if id // (10**5) < 0 or id // (10**5) > 10:
+            raise ValueError('The id should have 6 digits')
+        self.__id = id
+
+        self.__favorite_list = favorite_list
+        self.__shopping_bag = shopping_bag
+        self.__buy_history = buy_history
+
+    @property
+    def ID(self): 
+        return 'CU'+str(self.__id)
+
+    @ID.setter
+    def  ID(self,value):
+        if value // (10**5) < 0 or value // (10**5) > 10:
+            raise ValueError('The id should have 6 digits')
+        self.__id = value   
+
+    @property
+    def favorite_list(self):
+        fl = ''
+        for i in self.__favorite_list:
+            fl += i
+        return fl
+
+    @property
+    def shopping_bag(self):
+        sb = ''
+        for i in self.__shopping_bag:
+            sb += i
+        return sb
+    
+    @property
+    def buy_history(self):
+        bh = ''
+        for i in self.__buy_history:
+            bh += i
+        return bh
+
+    def comment(self,element,value):
+        if element in shopping_bag:
+            element.comment_list += [value]
+        else:
+            print('You can only comment for the products you have buyed')
+        return
+
+    def __str__(self):
+        return '\n first name: {}  \n last name: {}  \n phone number: {}  \n address: {}  \n postal code: {}  \n password: {}  \n electronic wallet: {}  \n id: {} \n favorite list: {} \n shopping bag: {} \n buy history: {} \n'\
+              .format(self.first_name,self.last_name, self.phone_number, self.address, self.postal_code, self.password, self.electronic_wallet,  self.ID, self.favorite_list, self.shopping_bag, self.buy_history)
+
+p1 = Product('p123', 'book' , 50000 , 5, ['good','nice'], [4,3])
+p2 = Product('s123', 'pen' , 5000 , 10, ['good','nice'], [4,2])
+p3 = Product('pv23', 'pencil' , 2000 , 2, ['good','nice','soft'], [4,3,5])
+p4 = Product('p1o3', 'eraser' , 5000 , 15, ['good','soft'], [4,3,1])
+p5 = Product('p12ff', 'ruler' , 10000 , 20, ['good','nice','long'], [4,3,1])
+c = customer('Arezu','Kamrani','09121234567','Rasht',1234567890,456789,1200,123456,[p1,p2,p3],[p1,p4],[p5,p2])
+print(c)
