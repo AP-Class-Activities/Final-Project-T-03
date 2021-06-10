@@ -6,7 +6,6 @@ The information consists of user's first name, last name, phone number, email, a
 This class helps the main shop to access users' information.
 The main shop needs this information to send the products to the customers who have buyed them.
 
-Authors: Niloofar Askari Masouleh
 
 Usage:
     1) Create a new user:
