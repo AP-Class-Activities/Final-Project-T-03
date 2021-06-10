@@ -141,4 +141,5 @@ class user:
 
 
 u = user('Arezu','Kamrani','09121234567','Rasht',1234567890,'seller',123456,456789,1200)
+u.electronic_wallet = 500
 print(u)
