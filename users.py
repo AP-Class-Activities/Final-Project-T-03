@@ -192,13 +192,6 @@ class customer(user):
     def Product(self): 
         return self.__Product
       
-    # def comment(self,element,value):
-    #     if element in shopping_bag:
-    #         element.comment_list += [value]
-    #     else:
-    #         print('You can only comment for the products you have buyed')
-    #     return
-
     def __str__(self):
         return super(customer,self).__str__() + '  favorite list: {}  \n shopping bag:{}  \n buy history: {}'.format(self.favorite_list, self.shopping_bag, self.buy_history)
   
