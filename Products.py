@@ -17,17 +17,19 @@ class Product:
         self.__name = name
 
         if  Price<=0 :
-            raise ValueError('the Price for a product should be positive.')
+            raise ValueError('the Price for a product should be positive!')
         self.__Price = Price
 
         if  discount<0 or discount>=100:
             raise ValueError('the discount for a product should be in range [0,100).')
         self.__discount = discount
+
         self.__comment_list = comment_list
 
+        score_list=[i for i in range(1,5+1) ]
         for i in score:
-            if i <0 or i > 5:
-                raise ValueError('Score should be positive and should not be more than 5.')
+            if i not in score_list :
+                raise ValueError('Score should be positive, integer and should not be more than five! ')
         self.__score = score
     
     #setters and getters
@@ -54,7 +56,7 @@ class Product:
     @Price.setter
     def Price(self,value): 
        if  value<=0 :
-            raise ValueError('the Price for a product should be positive.')
+            raise ValueError('the Price for a product should be positive! ')
        self.__Price = value
   
     @property
@@ -67,6 +69,7 @@ class Product:
             raise ValueError('the discount for a products should be in range [0,100).')
         self.__discount = value
     
+    #getters
     @property
     def comment_list(self):
         cm = ''
@@ -84,10 +87,10 @@ class Product:
 
 
     def __str__(self):
-        new_price=((100-self.discount)*self.Price)/100 
-        return '\n ID: {} \n name: {} \n Price: {}  ==> discount: {}  ==> new Price: {} \n Comments: {} \n Score: {} \n'\
+        new_price=int(((100-self.discount)*self.Price)/100) 
+        return '\n ID: {} \n name: {} \n Price: {} thousand toman  ==> discount: {} % ==> new Price: {} thousand toman \n Comments: {} \n average score: {} \n'\
             .format(self.ID,self.name, self.Price, self.discount,new_price, self.comment_list,self.score)
     
 
-x = Product ( 'p123', 'book' , 50000 , 5, ['good','nice'],[3,2])
+x = Product ( 'p123', 'book' , 50000 , 15, ['good','nice'],[4,3,4,2])
 print(x)
