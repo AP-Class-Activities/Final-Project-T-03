@@ -91,6 +91,6 @@ class Product:
         return '\n ID: {} \n name: {} \n Price: {} thousand toman  ==> discount: {} % ==> new Price: {} thousand toman \n Comments: {} \n average score: {} \n'\
             .format(self.ID,self.name, self.Price, self.discount,new_price, self.comment_list,self.score)
     
-
+#example client code:
 x = Product ( 'p123', 'book' , 50000 , 15, ['good','nice'],[4,3,4,2])
 print(x)
