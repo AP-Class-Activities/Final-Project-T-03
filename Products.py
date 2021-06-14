@@ -13,6 +13,8 @@ Usage:
 
 class Product:
     def __init__(self, id, name, Price,  discount=0, comment_list=[], score=[]) :
+        if id//(10**5) == 0 or id//(10**5) > 10:
+            raise ValueError('id should have 6 digits.')
         self.__id = id
         self.__name = name
 
@@ -26,7 +28,7 @@ class Product:
 
         self.__comment_list = comment_list
 
-        score_list=[i for i in range(1,5+1) ]
+        score_list=[i for i in range(0,5+1) ]
         for i in score:
             if i not in score_list :
                 raise ValueError('Score should be positive, integer and should not be more than five! ')
@@ -35,10 +37,12 @@ class Product:
     #setters and getters
     @property
     def ID(self): 
-        return self.__id
+        return 'PR' + str(self.__id)
     
     @ID.setter
     def ID(self,value): 
+        if value//(10**5) == 0 or value//(10**5) > 10:
+            raise ValueError('id should have 6 digits.')
         self.__id = value
 
     @property
@@ -83,14 +87,14 @@ class Product:
         s = 0
         for i in self.__score:
             s += i
-        return s/len(self.__score)
+  
+    def new_price(self):
+        return int(((100-self.discount)*self.Price)/100)
 
-
-    def __str__(self):
-        new_price=int(((100-self.discount)*self.Price)/100) 
-        return '\n ID: {} \n name: {} \n Price: {} thousand toman  ==> discount: {} % ==> new Price: {} thousand toman \n Comments: {} \n average score: {} \n'\
-            .format(self.ID,self.name, self.Price, self.discount,new_price, self.comment_list,self.score)
+    def __str__(self): 
+        return '\n ID: {} \n name: {} \n Price: {} toman  ==> discount: {} % ==> new Price: {} toman \n Comments: {} \n average score: {} \n'\
+            .format(self.ID,self.name, self.Price, self.discount,self.new_price(), self.comment_list,self.score)
     
 #example client code:
-x = Product ( 'p123', 'book' , 50000 , 15, ['good','nice'],[4,3,4,2])
-print(x)
+# x = Product ( 123456, 'book' , 50000 , 15, ['good','nice'],[4,3,4,2])
+# print(x)
