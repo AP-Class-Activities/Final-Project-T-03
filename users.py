@@ -171,42 +171,52 @@ class customer(user):
     def favorite_list(self):
         fl = ''
         for i in self.__favorite_list:
-            fl += i
+            fl += str(i)
         return fl
 
     @property
     def shopping_bag(self):
         sb = ''
         for i in self.__shopping_bag:
-            sb += i
+            sb += str(i)
         return sb
 
     @property
     def buy_history(self):
         bh = ''
         for i in self.__buy_history:
-            bh += i
+            bh += str(i)
         return bh
 
     @property
     def Product(self): 
         return self.__Product
-      
-    def __str__(self):
-        return super(customer,self).__str__() + '  favorite list: {}  \n shopping bag:{}  \n buy history: {}'.format(self.favorite_list, self.shopping_bag, self.buy_history)
-  
-    def __str__(self):
-        p = ''
-        p += '\n\n_____________________________________________Product__________________________________________________\n\n'
-        for i in self.Product: 
-            p += '%p\n'%(i)
-        return p
+
+    # def buy(self,element,date):
+    #     pass
 
 
-p1 = Product('p123', 'book' , 50000 , 5, ['good','nice'], [4,3])
-p2 = Product('s123', 'pen' , 5000 , 10, ['good','nice'], [4,2])
-p3 = Product('pv23', 'pencil' , 2000 , 2, ['good','nice','soft'], [4,3,5])
-p4 = Product('p1o3', 'eraser' , 5000 , 15, ['good','soft'], [4,3,1])
-p5 = Product('p12ff', 'ruler' , 10000 , 20, ['good','nice','long'], [4,3,1])
+    # def comment(self,element,value):
+    #     if element in self.buy_history:
+    #         element.comment_list += [value]
+    #     else:
+    #         print('You can only comment for the products you have buyed')
+    #     return
+
+    def __str__(self):
+        s ='________________________________________________________________________________________________________________\n'
+        f_l = '\n favorite list: \n {}'.format(self.favorite_list)
+        s_b = '\n shopping bag: \n {}'.format(self.shopping_bag)
+        b_h = '\n buy history: \n {}'.format(self.buy_history)
+        return super(customer,self).__str__() + s + f_l + s + s_b + s + b_h
+
+
+p1 = Product(123456, 'book' , 50000 , 5, ['good','nice'], [4,3])
+p2 = Product(987654, 'pen' , 5000 , 10, ['good','nice'], [4,2])
+p3 = Product(654237, 'pencil' , 2000 , 2, ['good','nice','soft'], [4,3,5])
+p4 = Product(528643, 'eraser' , 5000 , 15, ['good','soft'], [4,3,1])
+p5 = Product(525613, 'ruler' , 10000 , 20, ['good','nice','long'], [4,3,1])
 c = customer('Arezu','Kamrani','09121234567','Rasht',1234567890,456789,1200,'customer',123456,[p1,p2,p3],[p1,p4],[p5,p2])
 print(c) 
+# c.comment(p5,'very good')
+#bprint(p5.comment)
