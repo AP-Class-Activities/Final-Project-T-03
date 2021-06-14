@@ -70,11 +70,11 @@ class date:
 
     @day.setter
     def day(self,value):
-        if month in [i for i in range(1,7)] and value not in [i for i in range(1,32)]:
+        if value in [i for i in range(1,7)] and value not in [i for i in range(1,32)]:
             raise ValueError('Day should be between 1 and 31.')
-        elif month in [i for i in range(7,12)] and value not in [i for i in range(1,31)]:
+        elif value in [i for i in range(7,12)] and value not in [i for i in range(1,31)]:
             raise ValueError('Day shoud be between 1 and 30')
-        elif month == 12 and value not in [i for i in range(1,30)]:
+        elif value == 12 and value not in [i for i in range(1,30)]:
             raise ValueError('Day should be between 1 and 29.')
         self.__day = value   
 
