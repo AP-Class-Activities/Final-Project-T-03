@@ -115,4 +115,3 @@ class date:
 
 d = date(1398,6,16,12,54,36)
 print(d)
-print(d.year)
