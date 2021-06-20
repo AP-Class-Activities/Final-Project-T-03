@@ -13,6 +13,7 @@ class User:
     
         2) print the user information:
            print(u)
+           
     '''
 
     def __init__(self, first_name, last_name, phone_number, address, postal_code, password, electronic_wallet, type, id):
