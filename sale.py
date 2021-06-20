@@ -8,6 +8,7 @@ Usage:
     2) Print a sale information:
        print(sale)
 
+
 '''
 from Products import Product
 from users import Customer, Seller
