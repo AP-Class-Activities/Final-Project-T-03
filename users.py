@@ -1,4 +1,4 @@
-class user:
+class User:
     '''
     This class defines users in the main shop. 
     It contains the user's information. 
@@ -9,7 +9,7 @@ class user:
 
     Usage:
         1) Create a new user:
-           u = user(user_first_name, user_last_name, user_phone_number, user_adress, user_postal_code, user_id, user_password, user_electronic_wallet)
+           u = User(user_first_name, user_last_name, user_phone_number, user_adress, user_postal_code, user_id, user_password, user_electronic_wallet)
     
         2) print the user information:
            print(u)
@@ -106,9 +106,10 @@ class user:
 
     @electronic_wallet.setter
     def  electronic_wallet(self,value):
-        if value < 0:
+        new_value = self.__electronic_wallet + value
+        if new_value < 0:
             raise ValueError('The electronic_wallet should be positive! ')
-        self.__electronic_wallet = value
+        self.__electronic_wallet = new_value
 
     @property
     def type(self):
@@ -138,17 +139,20 @@ class user:
             .format(self.first_name,self.last_name, self.phone_number, self.address, self.postal_code, self.password, self.electronic_wallet, self.type, self.ID)
 
 #example client code:
-# u = user('Arezu','Kamrani','09121234567','Rasht',1234567890,456789,1200,'seller',1243)
+# u = User('Arezu','Kamrani','09121234567','Rasht',1234567890,456789,1200,'seller',1243)
 # print(u)
 
+from datetime import datetime
+# from date import Date 
+from sale import Sale
 from Products import  Product
-class customer(user):
+class Customer(User):
     '''
     This class defines customers in the main shop.
     Customer is a user.
     In this class we can see that each customer has a favorite list and can add products to this list or delete them from it.
     Each customer has a shopping bag and can add products to or delete them from it.
-    Each customer access to the produts.
+    Each customer access to the Product class, date class and sale class.
     This class allows each customers to see his/her buy history, favorite list and shopping bag.
     Each customer will be only able to comment for the produst he/she has buyed.
 
@@ -159,56 +163,97 @@ class customer(user):
         2) print the customer information:
            print(c)
     '''
-    def __init__(self, first_name, last_name, phone_number, address, postal_code, password, electronic_wallet, type, id, favorite_list, shopping_bag, buy_history, Product=[]):
-        super(customer,self).__init__(first_name, last_name, phone_number, address, postal_code, password, electronic_wallet, type, id)
+    def __init__(self, first_name, last_name, phone_number, address, postal_code, password, electronic_wallet, type, id, favorite_list, shopping_bag, buy_history, Product=[], Sale=[], Date=[]):
+        super(Customer,self).__init__(first_name, last_name, phone_number, address, postal_code, password, electronic_wallet, type, id)
         
         self.__favorite_list = favorite_list
         self.__shopping_bag = shopping_bag
         self.__buy_history = buy_history
         self.__Product=Product
 
+    #getters
+
     @property
     def favorite_list(self):
-        fl = ''
-        for i in self.__favorite_list:
-            fl += str(i)
-        return fl
+        return self.__favorite_list
 
     @property
     def shopping_bag(self):
-        sb = ''
-        for i in self.__shopping_bag:
-            sb += str(i)
-        return sb
+        return self.__shopping_bag
 
     @property
     def buy_history(self):
-        bh = ''
-        for i in self.__buy_history:
-            bh += str(i)
-        return bh
+        return self.__buy_history
 
     @property
     def Product(self): 
         return self.__Product
+ 
+    def add_shopping_bag(self,value):
+        if type(value) is Product:
+           self.__shopping_bag = self.shopping_bag + [value]
+        else: 
+            raise ValueError('You should enter a Product here.')
+        return
 
-    # def buy(self,element,date):
-    #     pass
+    def add_buy_history(self,value):
+        if type(value) is Product:
+            self.__buy_history = self.buy_history + [value]
+        return
+
+    def buy(self,buy_list ={}],seller,date = datetime.datetime.now()):
+        # buy_list = {product1.id:n1, product2.id:n2,...}
+        # n = the number of products the customer want to buy from this product.
+        for i in buy_list:
+            if i.stock < buy_list[i]:    # i.stock is not true :( i is the product's id
+                return 'There is not enough {}'\
+                    .format(i.name + i)  # i.name is not true :( i is the product's id
+        total_price = 0
+        for i in buy_list:
+            total_price += i.Price
+        if self.electronic_wallet > total_price or self.electronic_wallet == total_price:
+            self.electronic_wallet((-1)*total_price)
+            for i in buy_list:
+                s = Sale(i,seller,self)
+                self.add_buy_history(s)
+                i.stock((-1) * buy_list[i])    # i.stock is not true :( i is the product's id
+        else: 
+            print('You do not have enough money.')
+        return
 
 
-    # def comment(self,element,value):
-    #     if element in self.buy_history:
-    #         element.comment_list += [value]
-    #     else:
-    #         print('You can only comment for the products you have buyed')
-    #     return
+    def comment(self,element,value):
+        if element in self.buy_history:
+            element.add_comment(value)
+        else:
+            print('You can only comment for the products you have buyed')
+        return
+
+    def str_favorite_list(self):
+        fl = ''
+        for i in self.favorite_list:
+            fl += str(i)
+        return fl
+
+    def str_shopping_bag(self):
+        sb = ''
+        for i in self.shopping_bag:
+            sb += str(i)
+        return sb
+
+    def str_buy_history(self):
+        bh = ''
+        for i in self.buy_history:
+            bh += str(i)
+        return bh
+
 
     def __str__(self):
         s ='________________________________________________________________________________________________________________\n'
-        f_l = '\n favorite list: \n {}'.format(self.favorite_list)
-        s_b = '\n shopping bag: \n {}'.format(self.shopping_bag)
-        b_h = '\n buy history: \n {}'.format(self.buy_history)
-        return super(customer,self).__str__() + s + f_l + s + s_b + s + b_h
+        f_l = '\n favorite list: \n {}'.format(self.str_favorite_list())
+        s_b = '\n shopping bag: \n {}'.format(self.str_shopping_bag())
+        b_h = '\n buy history: \n {}'.format(self.str_buy_history())
+        return super(Customer,self).__str__() + s + f_l + s + s_b + s + b_h
 
 
 p1 = Product(123456, 'book' , 50000 , 5, ['good','nice'], [4,3])
@@ -216,7 +261,19 @@ p2 = Product(987654, 'pen' , 5000 , 10, ['good','nice'], [4,2])
 p3 = Product(654237, 'pencil' , 2000 , 2, ['good','nice','soft'], [4,3,5])
 p4 = Product(528643, 'eraser' , 5000 , 15, ['good','soft'], [4,3,1])
 p5 = Product(525613, 'ruler' , 10000 , 20, ['good','nice','long'], [4,3,1])
-c = customer('Arezu','Kamrani','09121234567','Rasht',1234567890,456789,1200,'customer',123456,[p1,p2,p3],[p1,p4],[p5,p2])
-print(c) 
+c = Customer('Arezu','Kamrani','09121234567','Rasht',1234567890,456789,1200,'customer',123456,[p1,p2,p3],[p1,p4],[p5,p2])
+# print(c) 
+# print(type(c))
 # c.comment(p5,'very good')
-#bprint(p5.comment)
+# print(p5.str_comment)
+
+class Seller:
+    '''
+    This is a class defining a seller.
+    Seler is a kind of User.
+    Each seller has a list of products and wants to sell them.
+    A seller can add new products to his/her list of products.
+
+
+    '''
+    def __init__():
