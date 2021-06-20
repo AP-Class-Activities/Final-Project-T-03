@@ -9,6 +9,7 @@ Usage:
 
    2) Print the product information:    
         print(p)
+        
 '''
 
 class Product:
