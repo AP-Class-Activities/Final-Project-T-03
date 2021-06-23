@@ -73,19 +73,11 @@ class Date:
 
     @day.setter
     def day(self,value):
-<<<<<<< HEAD
-        if month in [i for i in range(1,7)] and value not in [i for i in range(1,32)]:
+        if self.__month in [i for i in range(1,7)] and value not in [i for i in range(1,32)]:
             raise ValueError('Day should be between 1 and 31.')
-        elif month in [i for i in range(7,12)] and value not in [i for i in range(1,31)]:
+        elif self.__month in [i for i in range(7,12)] and value not in [i for i in range(1,31)]:
             raise ValueError('Day shoud be between 1 and 30')
-        elif month == 12 and value not in [i for i in range(1,30)]:
-=======
-        if value in [i for i in range(1,7)] and value not in [i for i in range(1,32)]:
-            raise ValueError('Day should be between 1 and 31.')
-        elif value in [i for i in range(7,12)] and value not in [i for i in range(1,31)]:
-            raise ValueError('Day shoud be between 1 and 30')
-        elif value == 12 and value not in [i for i in range(1,30)]:
->>>>>>> c883fcfea61aaebc0795655d26ffe8a204064fea
+        elif self.__month == 12 and value not in [i for i in range(1,30)]:
             raise ValueError('Day should be between 1 and 29.')
         self.__day = value   
 
@@ -122,13 +114,7 @@ class Date:
 
     def __str__ (self):
         return '\n {}/{}/{} \n {}:{}:{} \n'\
-<<<<<<< HEAD
         .format(self.year,self.month,self.day,self.hour,self.minute,self.second)
 
 d = Date(1398,6,16,12,54,36)
-=======
-            .format(self.year,self.month,self.day,self.hour,self.minute,self.second)
-
-d = date(1398,6,16,12,54,36)
->>>>>>> c883fcfea61aaebc0795655d26ffe8a204064fea
 print(d)
