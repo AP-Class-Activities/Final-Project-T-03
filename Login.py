@@ -98,8 +98,6 @@ class Ui_Form(object):
         self.LogLabel.setFont(font)
         self.LogLabel.setGeometry(QtCore.QRect(220, 350, 321, 51))
         self.LogLabel.setObjectName("LogLabel")
-        
-
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
@@ -117,8 +115,7 @@ class Ui_Form(object):
                         break
         if l == False:
               self.LogLabel.setText('نام کاربری یا پسورد نامعتبر است. :(')  
-
-                
+             
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "log in"))
@@ -128,7 +125,6 @@ class Ui_Form(object):
         self.label_3.setText(_translate("Form", "<html><head/><body><p align=\"center\"><span style=\" font-size:18pt; font-weight:600;\">ورود کاربر</span></p></body></html>"))
         self.LogLabel.setText(_translate("Form", "<html><head/><body><p align=\"center\"><span style=\" font-size:18pt;\">TextLabel</span></p></body></html>"))
 
-
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
@@ -137,4 +133,3 @@ if __name__ == "__main__":
     ui.setupUi(Form)
     Form.show()
     sys.exit(app.exec_())
-
