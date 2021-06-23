@@ -111,7 +111,7 @@ class Ui_Form(object):
         for i in range(len(users)):
                 if username == users[i][0]  and password == users[i][1]:
                         l = True
-                        self.LogLabel.setText('ورود با موفقیت انجام شد. :)')
+                        self.LogLabel.setText('{} خوش آمدید. :)'.format(users[i][0]))
                         break
         if l == False:
               self.LogLabel.setText('نام کاربری یا پسورد نامعتبر است. :(')  
