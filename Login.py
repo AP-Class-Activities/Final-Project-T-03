@@ -126,7 +126,7 @@ class Ui_Form(object):
         self.LogLabel.setText(_translate("Form", "<html><head/><body><p align=\"center\"><span style=\" font-size:18pt;\">TextLabel</span></p></body></html>"))
 
 if __name__ == "__main__":
-    import sys
+    import sys 
     app = QtWidgets.QApplication(sys.argv)
     Form = QtWidgets.QWidget()
     ui = Ui_Form()
