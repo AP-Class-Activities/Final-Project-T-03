@@ -4,9 +4,9 @@ This class has access to the product class, date class, customer class and the s
 
 Usage:
     1) Create a new sale:
-       Sale(product,seller,customer,date)
+       s = Sale(product,seller,customer,date)
     2) Print a sale information:
-       print(sale)
+       print(s)
 
 
 '''
