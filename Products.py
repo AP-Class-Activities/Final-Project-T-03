@@ -11,9 +11,10 @@ Usage:
         print(p)
         
 '''
+from users import User, Seller
 
 class Product:
-    def __init__(self, id, name, Price,  discount=0, comment_list=[], score=[], stock=0) :
+    def __init__(self, id, name, Price, seller,  discount=0, comment_list=[], score=[], stock=0) : 
         if id//(10**5) == 0 or id//(10**5) > 10:
             raise ValueError('id should have 6 digits.')
         self.__id = id
@@ -22,6 +23,12 @@ class Product:
         if  Price<=0 :
             raise ValueError('the Price for a product should be positive!')
         self.__Price = Price
+
+        
+        if seller is Seller:
+            self.__seller = seller
+        else:
+            raise ValueError ('Seller should be a seller!')
 
         if  discount<0 or discount>=100:
             raise ValueError('the discount for a product should be in range [0,100).')
@@ -67,7 +74,18 @@ class Product:
        if  value<=0 :
             raise ValueError('the Price for a product should be positive! ')
        self.__Price = value
-  
+
+    @property
+    def seller(self):
+        return self.__seller
+
+    @seller.setter
+    def seller(self,value):
+        if value is Seller:
+            self.__seller = value
+        else:
+            raise ValueError('Seller should be a seller!')
+            
     @property
     def discount(self): 
         return self.__discount
@@ -118,11 +136,11 @@ class Product:
         self.__comment_list = self.comment_list + [value]
 
     def __str__(self): 
-        return '\n ID: {} \n name: {} \n Price: {} toman  ==> discount: {} % ==> new Price: {} toman \n Comments: {} \n average score: {} \n'\
-            .format(self.ID,self.name, self.Price, self.discount,self.new_price(), self.str_comment(),self.average_score())
+        return '\n ID: {} \n name: {} \n Price: {} toman  ==> discount: {} % ==> new Price: {} toman \n Comments: {} \n average score: {} \n stock: {} \n seller:\n {}\n'\
+            .format(self.ID,self.name, self.Price, self.discount,self.new_price(), self.str_comment(),self.average_score(),self.stock,str(self.setter))
     
 #example client code:
-x = Product ( 123456, 'book' , 50000 , 15, ['good','nice'],[4,3,4,2])
+# x = Product ( 123456, 'book' , 50000 , 15, ['good','nice'],[4,3,4,2])
 # print(x)
-x.add_comment('useful')
-print(x.str_comment())
+# x.add_comment('useful')
+# print(x.str_comment())
