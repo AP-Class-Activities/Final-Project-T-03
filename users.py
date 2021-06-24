@@ -1,3 +1,4 @@
+from address import Address
 class User:
     '''
     This class defines users in the main shop. 
@@ -24,6 +25,8 @@ class User:
             raise ValueError('The phone number should have 11 digits and start with zero! ')
         self.__phone_number = phone_number
 
+        if type(address) is not Address:
+            raise ValueError('Address should be an Address!')
         self.__address = address
 
         if postal_code // (10**9) < 0 or postal_code // (10**9) > 10:
@@ -79,6 +82,8 @@ class User:
 
     @address.setter
     def address(self,value): 
+        if type(value) is not Address:
+            raise ValueError('Address should be an Address!')
         self.__address = value
     
     @property
@@ -300,7 +305,7 @@ class Seller(User):
         super(Customer,self).__init__(first_name, last_name, phone_number, address, postal_code, password, electronic_wallet, type, id)
         
         for i in product_list:
-            if i is not Product:
+            if type(i) is not Product:
                 raise ValueError('Product list should be a list products!')
         self.__product_list = product_list
 
@@ -309,7 +314,7 @@ class Seller(User):
         return self.__product_list
 
     def add_product(self,value):
-        if value is Product:
+        if type(value) is Product:
             self.__product_list = self.product_list + [value] 
 
     def product_str(self):
@@ -321,7 +326,10 @@ class Seller(User):
     def __str__(self):
         return super(Seller,self).__str__() + self.product_str()
 
-u = User('Arezu','Kamrani','09121234567','Rasht',1234567890,456789,1200,'seller',1243)
-# s = Seller('Arezu','Kamrani','09121234567','Rasht',1234567890,456789,1200,'seller',1243,[p1,p2])
-#s = Seller(u,[p1,p2])
-# print(s)
+#a = Address('Guian','Rasht','Golsar','123','25','4')
+# u = User('Arezu','Kamrani','09121234567',a,1234567890,456789,1200,'seller',1243)
+#s = Seller('Arezu','Kamrani','09121234567',a,1234567890,456789,1200,'seller',1243,[p1,p2])
+# s = Seller(u,[p1,p2])
+#print(s)
+
+# مشکل اینه که توی محصول، فروشنده رو می خوایم توی فروشنده محصول رو!!!!
