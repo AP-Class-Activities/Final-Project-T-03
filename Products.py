@@ -12,6 +12,7 @@ Usage:
         
 '''
 from users import User, Seller
+from address import Address
 
 class Product:
     def __init__(self, id, name, Price, seller,  discount=0, comment_list=[], score=[], stock=0) : 
@@ -140,7 +141,9 @@ class Product:
             .format(self.ID,self.name, self.Price, self.discount,self.new_price(), self.str_comment(),self.average_score(),self.stock,str(self.setter))
     
 #example client code:
-# x = Product ( 123456, 'book' , 50000 , 15, ['good','nice'],[4,3,4,2])
+a = Address('Guian','Rasht','Golsar','123','25','4')
+s = Seller('Arezu','Kamrani','09121234567',a,1234567890,456789,1200,'seller',1243,[p1,p2])
+x = Product ( 123456, 'book' , 50000 , , 15, ['good','nice'],[4,3,4,2],30)
 # print(x)
 # x.add_comment('useful')
 # print(x.str_comment())
