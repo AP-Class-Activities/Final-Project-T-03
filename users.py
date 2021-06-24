@@ -143,7 +143,7 @@ class User:
 # u = User('Arezu','Kamrani','09121234567','Rasht',1234567890,456789,1200,'seller',1243)
 # print(u)
 
-from datetime import datetime
+import jdatetime
 # from date import Date 
 from sale import Sale
 from Products import  Product
@@ -164,13 +164,38 @@ class Customer(User):
         2) print the customer information:
            print(c)
     '''
-    def __init__(self, first_name, last_name, phone_number, address, postal_code, password, electronic_wallet, type, id, favorite_list, shopping_bag, buy_history, Product=[], Sale=[], Date=[]):
+    def __init__(self, first_name, last_name, phone_number, address, postal_code, password, electronic_wallet, type, id, favorite_list = [], shopping_bag = [], buy_history = [], Product=[], Sale=[], Date=[]):
         super(Customer,self).__init__(first_name, last_name, phone_number, address, postal_code, password, electronic_wallet, type, id)
         
-        self.__favorite_list = favorite_list
-        self.__shopping_bag = shopping_bag
-        self.__buy_history = buy_history
-        self.__Product=Product
+        x = True
+        for i in favorite_list:
+            if type(i) is not Product:
+                x = False
+                break
+        if x:
+           self.__favorite_list = favorite_list
+        else:
+            raise ValueError('Favorite List should be a list of products!')
+
+        x = True
+        for i in shopping_bag:
+            if type(i) is not Product:
+                x = False
+                break
+        if x:
+           self.__shopping_bag = shopping_bag
+        else:
+            raise ValueError('Shopping Bag should be a list of products!')
+       
+        x = True
+        for i in buy_history:
+            if type(i) is not Product:
+                x = False
+                break
+        if x:
+           self.__buy_history = buy_history
+        else:
+            raise ValueError('Buy History should be a list of products!')
 
     #getters
 
@@ -185,10 +210,6 @@ class Customer(User):
     @property
     def buy_history(self):
         return self.__buy_history
-
-    @property
-    def Product(self): 
-        return self.__Product
  
     def add_shopping_bag(self,value):
         if type(value) is Product:
@@ -202,22 +223,20 @@ class Customer(User):
             self.__buy_history = self.buy_history + [value]
         return
 
-    def buy(self,buy_list ={}],seller,date = datetime.datetime.now()):
-        # buy_list = {product1.id:n1, product2.id:n2,...}
-        # n = the number of products the customer want to buy from this product.
+    def buy(self,buy_list =[],date = jdatetime.datetime.now()):
         for i in buy_list:
-            if i.stock < buy_list[i]:    # i.stock is not true :( i is the product's id
+            if i.stock < buy_list.count(i):    
                 return 'There is not enough {}'\
-                    .format(i.name + i)  # i.name is not true :( i is the product's id
+                    .format(i.name + i)  
         total_price = 0
         for i in buy_list:
             total_price += i.Price
         if self.electronic_wallet > total_price or self.electronic_wallet == total_price:
             self.electronic_wallet((-1)*total_price)
             for i in buy_list:
-                s = Sale(i,seller,self)
+                s = Sale(i,self)
                 self.add_buy_history(s)
-                i.stock((-1) * buy_list[i])    # i.stock is not true :( i is the product's id
+                i.stock(-1)     
         else: 
             print('You do not have enough money.')
         return
@@ -268,7 +287,7 @@ c = Customer('Arezu','Kamrani','09121234567','Rasht',1234567890,456789,1200,'cus
 # c.comment(p5,'very good')
 # print(p5.str_comment)
 
-class Seller:
+class Seller(User):
     '''
     This is a class defining a seller.
     Seler is a kind of User.
@@ -277,4 +296,32 @@ class Seller:
 
 
     '''
-    def __init__():
+    def __init__(self, first_name, last_name, phone_number, address, postal_code, password, electronic_wallet, type, id, product_list = []):
+        super(Customer,self).__init__(first_name, last_name, phone_number, address, postal_code, password, electronic_wallet, type, id)
+        
+        for i in product_list:
+            if i is not Product:
+                raise ValueError('Product list should be a list products!')
+        self.__product_list = product_list
+
+    @property
+    def product_list(self):
+        return self.__product_list
+
+    def add_product(self,value):
+        if value is Product:
+            self.__product_list = self.product_list + [value] 
+
+    def product_str(self):
+        s = 'Products:'
+        for i in self.product_list:
+            s += str(i)
+        return s
+
+    def __str__(self):
+        return super(Seller,self).__str__() + self.product_str()
+
+u = User('Arezu','Kamrani','09121234567','Rasht',1234567890,456789,1200,'seller',1243)
+# s = Seller('Arezu','Kamrani','09121234567','Rasht',1234567890,456789,1200,'seller',1243,[p1,p2])
+#s = Seller(u,[p1,p2])
+# print(s)
