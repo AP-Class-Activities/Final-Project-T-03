@@ -12,19 +12,14 @@ Usage:
 '''
 from Products import Product
 from users import Customer, Seller
-import datetime
+import jdatetime
 
 class Sale:
-    def __init__(self, product, seller, customer, date = datetime.datetime.now()):
+    def __init__(self, product, customer, date = jdatetime.datetime.now()):
         if type(product) is Product:
             self.__product = product
         else:
             raise ValueError('Product should be a Product!')
-        
-        if type(seller) is Seller:
-            self.__seller = seller
-        else:
-            raise ValueError('Seller should be a Seller!') 
         
         if type(customer) is Customer:
             self.__customer = customer
@@ -47,17 +42,6 @@ class Sale:
             raise ValueError('Product should be a Product!')     
 
     @property
-    def seller(self):
-        return self.__seller
-
-    @seller.setter
-    def seller(self,value):
-        if type(value) is Seller:
-            self.__seller = value
-        else:
-            raise ValueError('Seller should be a Seller!') 
-
-    @property
     def customer(self):
         return self.__customer
 
@@ -70,7 +54,7 @@ class Sale:
 
 
     def __str__(self):
-        return '\n Product:\n' + str(self.product) + '\n Seller:\n' + str(self.product) + '\n Customer:\n' + str(self.customer) + '\n Date:\n' + str(self.date))
+        return '\n Product:\n' + str(self.product) + '\n Customer:\n' + str(self.customer) + '\n Date:\n' + str(self.date)
 
 x = Product ( 123456, 'book' , 50000 , 15, ['good','nice'],[4,3,4,2])
-s = Sale(x,)
+# s = Sale(x,)
