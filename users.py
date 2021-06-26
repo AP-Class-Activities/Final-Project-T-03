@@ -152,6 +152,85 @@ import jdatetime
 # from date import Date 
 from sale import Sale
 from Products import  Product
+# import Seller
+
+class Seller(User):
+    '''
+    This is a class defining a seller.
+    Seler is a kind of User.
+    Each seller has a list of products and wants to sell them.
+    A seller can add new products to his/her list of products.
+
+
+    '''
+    def __init__(self, first_name, last_name, phone_number, address, postal_code, password, electronic_wallet, type, id, product_stock = [], score = []):
+        super(Customer,self).__init__(first_name, last_name, phone_number, address, postal_code, password, electronic_wallet, type, id)
+        
+        for i in product_stock:
+            if type(i[0]) is not Product or i[1]< 0:
+                raise ValueError('Product Stock should be a list products and their stocks! Stocks should not be negative!')
+        self.__product_stock = product_stock
+
+        score_list=[i for i in range(0,5+1) ]
+        for i in score:
+            if i not in score_list :
+                raise ValueError('Score should be positive, integer and should not be more than five! ')
+        self.__score = score
+
+    # setter and getter
+
+    @property
+    def score(self):
+        return self.__score
+
+    @score.setter
+    def score(self,value):
+        score_list=[i for i in range(0,5+1) ]
+        if value not in score_list :
+            raise ValueError('Score should be positive, integer and should not be more than five! ')
+        self.__score = self.score + [value]
+
+    @property
+    def product_stock(self):
+        return self.__product_stock
+
+    def add_product(self,value):
+        if type(value[0]) is not Product:
+           raise ValueError('Product Stock should be a list products and their stocks!')
+        for i in self.product_stock:
+            if i[0] == value[0]:
+                if i[1] < value[1]:
+                    raise ValueError('Stock can not be negative!')
+                else:
+                    j = [i[0],i[1] + value[1]]
+                    self.__product_stock = self.product_stock.remove(i) + j
+        if value[1] < 0:
+            raise ValueError('stock should be positive!')
+        self.__product_stock = self.product_stock + [value] 
+
+        
+    def average_score(self):
+        s = 0
+        for i in self.score:
+            s += i
+        return s/(len(self.score))
+
+    def product_str(self):
+        s = 'Products:'
+        for i in self.product_list:
+            s = s + str(i[0]) + 'Number:' + str(i[1]) + '\n'
+        return s
+
+    def __str__(self):
+        return super(Seller,self).__str__() + self.product_str()
+
+# a = Address('Guian','Rasht','Golsar','123','25','4')
+# u = User('Arezu','Kamrani','09121234567',a,1234567890,456789,1200,'seller',1243)
+# s = Seller('Arezu','Kamrani','09121234567',a,1234567890,456789,1200,'seller',1243,[[p1,2],[p2,1]])
+# s = Seller(u,[p1,p2])
+# print(s)
+
+
 class Customer(User):
     '''
     This class defines customers in the main shop.
@@ -169,38 +248,39 @@ class Customer(User):
         2) print the customer information:
            print(c)
     '''
-    def __init__(self, first_name, last_name, phone_number, address, postal_code, password, electronic_wallet, type, id, favorite_list = [], shopping_bag = [], buy_history = [], Product=[], Sale=[], Date=[]):
+    def __init__(self, first_name, last_name, phone_number, address, postal_code, password, electronic_wallet, type , id, favorite_list = [], shopping_bag = [], buy_history = [], Product=[], Sale=[], Date=[]):
         super(Customer,self).__init__(first_name, last_name, phone_number, address, postal_code, password, electronic_wallet, type, id)
         
-        x = True
         for i in favorite_list:
             if type(i) is not Product:
-                x = False
-                break
-        if x:
-           self.__favorite_list = favorite_list
-        else:
-            raise ValueError('Favorite List should be a list of products!')
-
-        x = True
+                raise ValueError('Favorite List should be a list of lists of products!')
+        fl =[]
+        for i in favorite_list:
+            if i not in fl:
+                fl.append(i)
+        self.__favorite_list = fl  # favorite_list = [product1,product2,...]
+        
         for i in shopping_bag:
-            if type(i) is not Product:
-                x = False
-                break
-        if x:
-           self.__shopping_bag = shopping_bag
-        else:
-            raise ValueError('Shopping Bag should be a list of products!')
-       
-        x = True
-        for i in buy_history:
-            if type(i) is not Product:
-                x = False
-                break
-        if x:
-           self.__buy_history = buy_history
-        else:
-            raise ValueError('Buy History should be a list of products!')
+            if type(i[0]) is not Product or type(i[1]) is not Seller:
+                raise ValueError('Shopping Bag should be a list of lists of products and their Sellers!')
+        sb = []
+        for i in shopping_bag:
+            if [i[0],i[1],0] not in sb:
+                sb = sb + [i[0],i[1],0]
+        for i in shopping_bag:
+            for j in sb:
+                if i[0] == j[0] and i[1] == j[1]:
+                    j[2] += i[2]
+        self.__shopping_bag = sb # shopping_bag = [[product1, seller1, number1],...]
+
+        for i in buy_history: 
+            for j in i:
+                if type(j) is not Sale:
+                     raise ValueError('Buy History should be a list of lists of sales!')
+                for k in i:
+                    if j.customer != self or j.date.year != k.date.year or j.date.month != k.date.month or j.date.day != k.date.day or j.date.hour != k.date.hour or j.date.minute != k.date.minute:
+                        raise ValueError('Each item in the buy history should be a list of sales with the same customer(self) and date!')
+        self.__buy_history = buy_history # buy_history =[[sale1,sale2,...],[sale'1,sale'2,...],...]
 
     #getters
 
@@ -216,21 +296,50 @@ class Customer(User):
     def buy_history(self):
         return self.__buy_history
  
-    def add_shopping_bag(self,value):
-        if type(value) is Product:
-           self.__shopping_bag = self.shopping_bag + [value]
-        else: 
-            raise ValueError('You should enter a Product here.')
-        return
+    def add_favorite_list(self,value):
+        if value is not Product:
+                raise ValueError('You should enter a Product.')
+        elif value in self.favorite_list:
+            return
+        self.__favorite_list = self.favorite_list + [value]
+ 
+    def sub_favorite_list(self,value):
+        if value is not Product:
+                raise ValueError('You should enter a Product.')
+        elif value not in self.favorite_list:
+            return
+        self.__favorite_list = self.favorite_list.remove(value)
+ 
+    def modify_shopping_bag(self,value):
+        if type(value[0]) is not Product or type(value[1]) is not Seller:
+                raise ValueError('You should enter a list of a Product and its Seller here.')
+        for i in self.shopping_bag:
+            if i[0] == value[0] and i[1] == value[1]:
+                if i[2] + value[2] < 0:
+                    raise ValueError('The number of a product in shopping bag can not be negative!')
+                elif i[2] + value[2] == 0:
+                    self.__shopping_bag = self.shopping_bag.remove(i)
+                else:
+                   j = [i[0], i[1], i[2] + value[2]]
+                   self.__shopping_bag = self.shopping_bag.remove(i) + j
+        if value[2] < 0:
+            raise ValueError('The number of a product in shopping bag should be positive')
+        elif value[2] == 0:
+            return
+        self.__shopping_bag = self.shopping_bag + [value]
 
     def add_buy_history(self,value):
-        if type(value) is Product:
-            self.__buy_history = self.buy_history + [value]
-        return
+        for i in value:
+                if type(i) is not Sale:
+                     raise ValueError('Buy History should be a list of sales!')
+                for j in value:
+                    if i.customer != self or i.date.year != j.date.year or i.date.month != j.date.month or i.date.day != j.date.day or i.date.hour != j.date.hour or i.date.minute != j.date.minute:
+                        raise ValueError('Each itemin the buy history should be a list of sales with the same customer(self) and date!')
+        self.__buy_history = self.buy_history + [value] 
 
-    def buy(self,buy_list =[],date = jdatetime.datetime.now()):
+    def buy(self,buy_list =[], date = jdatetime.datetime.now()): # buy_list = [[product,seller]]
         for i in buy_list:
-            if i.stock < buy_list.count(i):    
+            if i[0].stock < buy_list.count(i):    
                 return 'There is not enough {}'\
                     .format(i.name + i)  
         total_price = 0
@@ -238,21 +347,34 @@ class Customer(User):
             total_price += i.Price
         if self.electronic_wallet > total_price or self.electronic_wallet == total_price:
             self.electronic_wallet((-1)*total_price)
+            b_h =[]
             for i in buy_list:
-                s = Sale(i,self)
-                self.add_buy_history(s)
-                i.stock(-1)     
+                s = Sale(i,i[1],self)
+                b_h.append(s)
+                i.stock(-1) 
+            self.add_buy_history(b_h)    
         else: 
             print('You do not have enough money.')
         return
 
 
     def comment(self,element,value):
-        if element in self.buy_history:
-            element.add_comment(value)
-        else:
-            print('You can only comment for the products you have buyed')
-        return
+        for i in self.buy_history:
+            for j in i:
+                if element in j:
+                    element.comment(self.first_name + ' ' + self.last_name + ': ' + value)
+                    return
+        raise ValueError('You can only comment for the products you have bought before!')
+        
+    def rate(self,element,value):
+        for i in self.buy_history:
+            for j in i:
+                if element in j:
+                    element.score(value)
+                    j.seller.score(value)
+                    return
+        raise ValueError('You can only rate the products you have bought before!')
+
 
     def str_favorite_list(self):
         fl = ''
@@ -263,13 +385,16 @@ class Customer(User):
     def str_shopping_bag(self):
         sb = ''
         for i in self.shopping_bag:
-            sb += str(i)
+            sb = sb + 'Product:' + str(i[0]) + 'Seller:' + str(i[1]) + 'Number:' + str(i[2]) + '\n'
         return sb
 
     def str_buy_history(self):
         bh = ''
+        t = '______________________________________________________________________________________________________________\n'
         for i in self.buy_history:
-            bh += str(i)
+            for j in i:
+               bh += str(i)
+            bh += t
         return bh
 
 
@@ -286,50 +411,12 @@ p2 = Product(987654, 'pen' , 5000 , 10, ['good','nice'], [4,2])
 p3 = Product(654237, 'pencil' , 2000 , 2, ['good','nice','soft'], [4,3,5])
 p4 = Product(528643, 'eraser' , 5000 , 15, ['good','soft'], [4,3,1])
 p5 = Product(525613, 'ruler' , 10000 , 20, ['good','nice','long'], [4,3,1])
-c = Customer('Arezu','Kamrani','09121234567','Rasht',1234567890,456789,1200,'customer',123456,[p1,p2,p3],[p1,p4],[p5,p2])
-# print(c) 
+s1 = Seller('Arezu','Kamrani','09121234567','Rasht',1234567890,456789,1200,'seller',123456,[[p1,3],[p2,5]])
+c = Customer('Arezu','Kamrani','09121234567','Rasht',1234567890,456789,1200,'customer',123456,[p1,p2,p3],[[p1,s1,2]])
+s2 = Sale(p1,s1,c)
+c.buy_history(s2)
+print(c) 
 # print(type(c))
 # c.comment(p5,'very good')
 # print(p5.str_comment)
 
-class Seller(User):
-    '''
-    This is a class defining a seller.
-    Seler is a kind of User.
-    Each seller has a list of products and wants to sell them.
-    A seller can add new products to his/her list of products.
-
-
-    '''
-    def __init__(self, first_name, last_name, phone_number, address, postal_code, password, electronic_wallet, type, id, product_list = []):
-        super(Customer,self).__init__(first_name, last_name, phone_number, address, postal_code, password, electronic_wallet, type, id)
-        
-        for i in product_list:
-            if type(i) is not Product:
-                raise ValueError('Product list should be a list products!')
-        self.__product_list = product_list
-
-    @property
-    def product_list(self):
-        return self.__product_list
-
-    def add_product(self,value):
-        if type(value) is Product:
-            self.__product_list = self.product_list + [value] 
-
-    def product_str(self):
-        s = 'Products:'
-        for i in self.product_list:
-            s += str(i)
-        return s
-
-    def __str__(self):
-        return super(Seller,self).__str__() + self.product_str()
-
-#a = Address('Guian','Rasht','Golsar','123','25','4')
-# u = User('Arezu','Kamrani','09121234567',a,1234567890,456789,1200,'seller',1243)
-#s = Seller('Arezu','Kamrani','09121234567',a,1234567890,456789,1200,'seller',1243,[p1,p2])
-# s = Seller(u,[p1,p2])
-#print(s)
-
-# مشکل اینه که توی محصول، فروشنده رو می خوایم توی فروشنده محصول رو!!!!
