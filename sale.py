@@ -4,18 +4,19 @@ This class has access to the product class, date class, customer class and the s
 
 Usage:
     1) Create a new sale:
-       Sale(product,seller,customer,date)
+       s = Sale(product,seller,customer,date)
     2) Print a sale information:
-       print(sale)
+       print(s)
 
 
 '''
 from Products import Product
 from users import Customer, Seller
-import datetime
+import jdatetime
+from users import Seller
 
 class Sale:
-    def __init__(self, product, seller, customer, date = datetime.datetime.now()):
+    def __init__(self, product, seller, customer, date = jdatetime.datetime.now()):
         if type(product) is Product:
             self.__product = product
         else:
@@ -24,14 +25,12 @@ class Sale:
         if type(seller) is Seller:
             self.__seller = seller
         else:
-            raise ValueError('Seller should be a Seller!') 
-        
+            raise ValueError('Seller should be a seller!')
+
         if type(customer) is Customer:
             self.__customer = customer
         else:
             raise ValueError('Customer should be a Customer!')
-
-    # date = datetime.datetime.now()
 
     # setter and getter
 
@@ -50,12 +49,12 @@ class Sale:
     def seller(self):
         return self.__seller
 
-    @seller.setter
+    @product.setter
     def seller(self,value):
         if type(value) is Seller:
             self.__seller = value
         else:
-            raise ValueError('Seller should be a Seller!') 
+            raise ValueError('Seller should be a Seller!')
 
     @property
     def customer(self):
@@ -70,7 +69,11 @@ class Sale:
 
 
     def __str__(self):
-        return '\n Product:\n' + str(self.product) + '\n Seller:\n' + str(self.product) + '\n Customer:\n' + str(self.customer) + '\n Date:\n' + str(self.date))
+        return '\n Product:\n' + str(self.product) + '\n Seller:\n' + str(self.seller) + '\n Customer:\n' + str(self.customer) + '\n Date:\n' + str(self.date)
 
 x = Product ( 123456, 'book' , 50000 , 15, ['good','nice'],[4,3,4,2])
-s = Sale(x,)
+p1 = Product(123456, 'book' , 50000 , 5, ['good','nice'], [4,3])
+p2 = Product(987654, 'pen' , 5000 , 10, ['good','nice'], [4,2])
+
+# s = Seller('Arezu','Kamrani','09121234567',a,1234567890,456789,1200,'seller',1243,[[p1,2],[p2,1]])
+# s = Sale(p1,)
