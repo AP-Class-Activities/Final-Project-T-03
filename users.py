@@ -159,22 +159,21 @@ class Seller(User):
 
     Usage:
          1) Create a Seller:
-            s = Seller(first_name, last_name, sexuality, phone_number, address, postal_code, password, electronic_wallet, product_stock = [], score = [])
+            s = Seller(first_name, last_name, sexuality, phone_number, address, postal_code, password, electronic_wallet)
          2) Print a Seller:
             print(s)
+        3) The Seller can add Products to or delete products from his/her product_stock:
+           s.product_stock(value)  value = [product1,stock1]
 
     '''
-    def __init__(self, first_name, last_name, sexuality, phone_number, address, postal_code, password, electronic_wallet, product_stock = []):
-        super(Customer,self).__init__(first_name, last_name, sexuality, phone_number, address, postal_code, password, electronic_wallet, type, id)
-
-        for i in product_stock:     # product_stock = [[product1, stock1],[product2, stock2],...]
-            if type(i[0]) is not Product or i[1]< 0:
-                raise ValueError('Product Stock should be a list products and their stocks! Stocks should not be negative!')
-        self.__product_stock = product_stock
-
+    def __init__(self, first_name, last_name, sexuality, phone_number, address, postal_code, password, electronic_wallet):
+        super(Seller,self).__init__(first_name, last_name, sexuality, phone_number, address, postal_code, password, electronic_wallet)
+  
+        self.__product_stock = []    # product_stock = [[product1, stock1],[product2, stock2],...]
+        
         self.__score = []
     
-    
+
     # setter and getter:
 
     @property
@@ -199,9 +198,13 @@ class Seller(User):
             if i[0] == value[0]:
                 if i[1] + value[1] < 0:
                     raise ValueError('Stock can not be negative!')
+                elif i[1] + value[1] == 0:
+                    self.__product_stock = self.product_stock.remove(i)
+                    return
                 else:
                     j = [i[0],i[1] + value[1]]
                     self.__product_stock = self.product_stock.remove(i) + j
+                    return
         if value[1] < 0:
             raise ValueError('stock should be positive!')
         self.__product_stock = self.product_stock + [value] 
@@ -211,6 +214,8 @@ class Seller(User):
         s = 0
         for i in self.score:
             s += i
+        if len(self.score) == 0:
+            return ''
         return s/(len(self.score))
 
     def product_str(self):
@@ -224,7 +229,7 @@ class Seller(User):
 
 # a = Address('Guian','Rasht','Golsar','123','25','4')
 # u = User('Arezu','Kamrani','Woman', '09121234567',a,1234567890,456789,1200)
-# s = Seller('Arezu','Kamrani','Woman' ,'09121234567',a,1234567890,456789,1200,[[p1,2],[p2,1]])
+# s = Seller('Arezu','Kamrani','Woman' ,'09121234567',a,1234567890,456789,1200)
 # s = Seller(u,[p1,p2])
 # print(s)
 
@@ -241,35 +246,26 @@ class Customer(User):
 
     Usage:
         1) Create a new customer:
-           c = customer(customer_first_name, customer_last_name, customer_sexuality, customer_phone_number, customer_adress, customer_postal_code, user_password, customer_electronic_wallet, customer_type, customer_id, favorite_list=[], shopping_bag=[])
+           c = Customer(customer_first_name, customer_last_name, customer_sexuality, customer_phone_number, customer_adress, customer_postal_code, user_password, customer_electronic_wallet)
     
         2) print the customer information:
            print(c)
+        
+        3) The Customer can add products to of delete products from his/her shopping_bag:
+           c.modify_shopping_bag(value)  value = [product1,seller1,number1]
+
+        4) The Customer can add product to his/her favorite_list:
+           c.add_favorite_list(value)  value is a product
+
+        5) The customer can delete a product from his/her favorite_list:
+           c.sub_favorite_list(value)  value is a product
     '''
-    def __init__(self, first_name,sexuality, last_name, phone_number, address, postal_code, password, electronic_wallet, favorite_list = [], shopping_bag = [], Product=[], Sale=[], Date=[]):
-        super(Customer,self).__init__(first_name, last_name, sexuality, phone_number, address, postal_code, password, electronic_wallet, type, id)
-        
-        for i in favorite_list:
-            if type(i) is not Product:
-                raise ValueError('Favorite List should be a list of lists of products!')
-        fl =[]
-        for i in favorite_list:
-            if i not in fl:
-                fl.append(i)
-        self.__favorite_list = fl  # favorite_list = [product1,product2,...]
-        
-        for i in shopping_bag:
-            if type(i[0]) is not Product or type(i[1]) is not Seller:
-                raise ValueError('Shopping Bag should be a list of lists of products and their Sellers!')
-        sb = []
-        for i in shopping_bag:
-            if [i[0],i[1],0] not in sb:
-                sb = sb + [i[0],i[1],0]
-        for i in shopping_bag:
-            for j in sb:
-                if i[0] == j[0] and i[1] == j[1]:
-                    j[2] += i[2]
-        self.__shopping_bag = sb # shopping_bag = [[product1, seller1, number1],...]
+    def __init__(self, first_name,sexuality, last_name, phone_number, address, postal_code, password, electronic_wallet):
+        super(Customer,self).__init__(first_name, last_name, sexuality, phone_number, address, postal_code, password, electronic_wallet)
+
+        self.__favorite_list = []   # favorite_list = [product1,product2,...]
+
+        self.__shopping_bag = []  # shopping_bag = [[product1, seller1, number1],...]
 
 
     #getters
@@ -307,9 +303,11 @@ class Customer(User):
                     raise ValueError('The number of a product in shopping bag can not be negative!')
                 elif i[2] + value[2] == 0:
                     self.__shopping_bag = self.shopping_bag.remove(i)
+                    return
                 else:
                    j = [i[0], i[1], i[2] + value[2]]
                    self.__shopping_bag = self.shopping_bag.remove(i) + j
+                   return
         if value[2] < 0:
             raise ValueError('The number of a product in shopping bag should be positive')
         elif value[2] == 0:
@@ -335,12 +333,12 @@ class Customer(User):
         return super(Customer,self).__str__() + s + f_l + s + s_b + s    
 
 
-# p1 = Product('book' , 50000 , 5, ['good','nice'], [4,3])
-# p2 = Product('pen' , 5000 , 10, ['good','nice'], [4,2])
-# p3 = Product('pencil' , 2000 , 2, ['good','nice','soft'], [4,3,5])
-# p4 = Product('eraser' , 5000 , 15, ['good','soft'], [4,3,1])
-# p5 = Product('ruler' , 10000 , 20, ['good','nice','long'], [4,3,1])
-# s1 = Seller('Arezu','Kamrani','Woman', '09121234567','Rasht',1234567890,456789,1200,'seller',123456,[[p1,3],[p2,5]])
-# c = Customer('Arezu','Kamrani','Woman', '09121234567','Rasht',1234567890,456789,1200,'customer',123456,[p1,p2,p3],[[p1,s1,2]])
+# p1 = Product('book' , 50000 , 5, ['good','nice'])
+# p2 = Product('pen' , 5000 , 10, ['good','nice'])
+# p3 = Product('pencil' , 2000 , 2, ['good','nice','soft'])
+# p4 = Product('eraser' , 5000 , 15, ['good','soft']])
+# p5 = Product('ruler' , 10000 , 20, ['good','nice','long'])
+# s1 = Seller('Arezu','Kamrani','Woman', '09121234567','Rasht',1234567890,456789,1200,'seller',123456)
+# c = Customer('Arezu','Kamrani','Woman', '09121234567','Rasht',1234567890,456789,1200,'customer',123456)
 # print(c) 
 # print(type(c))
