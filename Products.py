@@ -5,7 +5,7 @@ You should notice that this class makes access to products easier.
 
 Usage:
    1) Create a new product :
-        p= product(product_name, product_Price, product_discount, comment_list)
+        p= product(product_name, product_Price, product_discount)
 
    2) Print the product information:    
         print(p)
