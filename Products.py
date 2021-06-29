@@ -17,7 +17,9 @@ Usage:
 class Product:
     def __init__(self, name, Price, discount=0, comment_list=[], score=[]) :  
 
-
+        for i in name:
+            if i in [str(j) for j in range(0,10)]:
+                raise ValueError('Name does not include number.')
         self.__name = name
 
         if  Price<=0 :
@@ -36,20 +38,18 @@ class Product:
                 raise ValueError('Score should be positive, integer and should not be more than five! ')
         self.__score = score
 
-    # getter:
-
-    # @property
-    # def ID(self): 
-    #     return self.__id
 
     #setters and getters:
 
     @property
-    def name(self): 
+    def name(self):
         return self.__name
 
     @name.setter
     def name(self,value): 
+        for i in value:
+            if i in [str(j) for j in range(0,10)]:
+                raise ValueError('Name does not include number.')
         self.__name = value
 
     @property
