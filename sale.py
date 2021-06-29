@@ -13,10 +13,9 @@ Usage:
 from Products import Product
 from users import Customer, Seller
 import jdatetime
-from users import Seller
 
 class Sale:
-    def __init__(self, product, seller, customer, date = jdatetime.datetime.now()):
+    def __init__(self, product, seller, customer):
         if type(product) is Product:
             self.__product = product
         else:
@@ -31,6 +30,8 @@ class Sale:
             self.__customer = customer
         else:
             raise ValueError('Customer should be a Customer!')
+
+        self.__date = jdatetime.datetime.now()
 
     # setter and getter
 
@@ -67,6 +68,9 @@ class Sale:
         else:
             raise ValueError('Customer should be a Customer!')
 
+    @property
+    def date(self):
+        return self.__date
 
     def __str__(self):
         return '\n Product:\n' + str(self.product) + '\n Seller:\n' + str(self.seller) + '\n Customer:\n' + str(self.customer) + '\n Date:\n' + str(self.date)
