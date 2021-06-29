@@ -7,6 +7,7 @@
       2) Print the address information:
          print(a)
 '''
+
 class Address:
     def __init__(self, province, city, street, alley, plaque, unit):
 
