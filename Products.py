@@ -12,8 +12,7 @@ Usage:
         
 '''
 
-# from address import Address
-from random import randint
+# from random import randint
 
 class Product:
     def __init__(self, name, Price, discount=0, comment_list=[], score=[]) :  
@@ -114,7 +113,7 @@ class Product:
             .format(self.name, self.Price, self.discount,self.new_price(), self.str_comment(),self.average_score())
     
 # example client code:
-p = Product ('book' , 50000 , 15, ['good','nice'],[4,3,4,2])
+# p = Product ('book' , 50000 , 15, ['good','nice'],[4,3,4,2])
 
 # x = randint(100000,999999)
 # while 'PR' + str(x) in []:   # ID_list should be made by ID_file :(
