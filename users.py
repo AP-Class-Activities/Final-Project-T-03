@@ -19,7 +19,14 @@ class User:
 
     def __init__(self, first_name, last_name, sexuality, phone_number, address, postal_code, password, electronic_wallet): # id , type
         
+        for i in first_name:
+            if i in [str(j) for j in range(0,10)]:
+                raise ValueError('First Name does not include number.')
         self.__first_name = first_name
+
+        for i in last_name:
+            if i in [str(j) for j in range(0,10)]:
+                raise ValueError('Last Name does not include number.')
         self.__last_name = last_name
 
         if sexuality not in ['Man', 'Woman']:
@@ -53,6 +60,9 @@ class User:
 
     @first_name.setter
     def first_name(self,value): 
+        for i in value:
+            if i in [str(j) for j in range(0,10)]:
+                raise ValueError('First Name does not include number.')
         self.__first_name = value
     
     @property
@@ -61,6 +71,9 @@ class User:
 
     @last_name.setter
     def last_name(self,value): 
+        for i in value:
+            if i in [str(j) for j in range(0,10)]:
+                raise ValueError('Last Name does not include number.')
         self.__last_name = value
     
     @property
