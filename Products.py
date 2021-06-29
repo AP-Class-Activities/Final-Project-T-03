@@ -5,7 +5,7 @@ You should notice that this class makes access to products easier.
 
 Usage:
    1) Create a new product :
-        p= product(product_name, product_Price, product_discount, comment_list, score)
+        p= product(product_name, product_Price, product_discount, comment_list)
 
    2) Print the product information:    
         print(p)
@@ -15,7 +15,7 @@ Usage:
 # from random import randint
 
 class Product:
-    def __init__(self, name, Price, discount=0, comment_list=[], score=[]) :  
+    def __init__(self, name, Price, discount=0) :  
 
         for i in name:
             if i in [str(j) for j in range(0,10)]:
@@ -30,14 +30,9 @@ class Product:
             raise ValueError('the discount for a product should be in range [0,100).')
         self.__discount = discount
 
-        self.__comment_list = comment_list
+        self.__comment_list = []
 
-        score_list=[i for i in range(0,5+1)]
-        for i in score:
-            if i not in score_list :
-                raise ValueError('Score should be positive, integer and should not be more than five! ')
-        self.__score = score
-
+        self.__score = []
 
     #setters and getters:
 
@@ -103,6 +98,8 @@ class Product:
         s = 0
         for i in self.score:
             s += i
+        if len(self.score) == 0:
+            return ''
         return s/(len(self.score))
   
     def new_price(self):
@@ -113,7 +110,7 @@ class Product:
             .format(self.name, self.Price, self.discount,self.new_price(), self.str_comment(),self.average_score())
     
 # example client code:
-# p = Product ('book' , 50000 , 15, ['good','nice'],[4,3,4,2])
+# p = Product ('book' , 50000 , 15)
 
 # x = randint(100000,999999)
 # while 'PR' + str(x) in []:   # ID_list should be made by ID_file :(
