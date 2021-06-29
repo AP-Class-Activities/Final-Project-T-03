@@ -47,6 +47,27 @@ class User:
 
         if len(str(password)) < 3 or len(str(password)) > 8:
             raise ValueError('The password should have between 4 and 8 characters.')
+        j = 0
+        for i in [k for k in '0123456789']:
+            if i in password:
+                j += 1
+        if j == 0:
+            raise ValueError('Password should include at least one digit!')
+        j = 0
+        for i in [k for k in 'abcdefghijklmnopqrstuvwxyz']:
+            if i in password:
+                j += 1
+        if j == 0:
+            raise ValueError('Password should include at least one small letter!')
+        j = 0
+        for i in [k for k in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ']:
+            if i in password:
+                j += 1
+        if j == 0:
+            raise ValueError('Password should contain at least one capital letter!')
+        for i in password:
+            if i not in '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz':
+                raise ValueError('Password should be made by small letters, capital letters and numbers!')
         self.__password = password
 
         if electronic_wallet < 0:
@@ -124,6 +145,27 @@ class User:
     def  password(self,value):
         if len(str(value)) < 3 or len(str(value)) > 8:
             raise ValueError('The password should have between 4 and 8 characters. ')
+        j = 0
+        for i in [k for k in '0123456789']:
+            if i in value:
+                j += 1
+        if j == 0:
+            raise ValueError('Password should include at least one digit!')
+        j = 0
+        for i in [k for k in 'abcdefghijklmnopqrstuvwxyz']:
+            if i in value:
+                j += 1
+        if j == 0:
+            raise ValueError('Password should include at least one small letter!')
+        j = 0
+        for i in [k for k in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ']:
+            if i in value:
+                j += 1
+        if j == 0:
+            raise ValueError('Password should contain at least one capital letter!')
+        for i in value:
+            if i not in '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz':
+                raise ValueError('Password should be made by small letters, capital letters and numbers!')
         self.__password = value
 
     @property
@@ -144,7 +186,7 @@ class User:
             .format(self.first_name,self.last_name, self.sexuality, self.phone_number, self.address, self.postal_code, self.password, self.electronic_wallet)
 
 #example client code:
-# u = User('Arezu','Kamrani', 'Woman','09121234567','Rasht',1234567890,456789,1200)
+# u = User('Arezu','Kamrani', 'Woman','09121234567','Rasht',1234567890,'pK6789',1200)
 # print(u)
 
 from Products import  Product
@@ -228,8 +270,8 @@ class Seller(User):
         return super(Seller,self).__str__() + '\n' + self.product_str() + '\n' + 'Average Score:' + str(self.average_score())
 
 # a = Address('Guian','Rasht','Golsar','123','25','4')
-# u = User('Arezu','Kamrani','Woman', '09121234567',a,1234567890,456789,1200)
-# s = Seller('Arezu','Kamrani','Woman' ,'09121234567',a,1234567890,456789,1200)
+# u = User('Arezu','Kamrani','Woman', '09121234567',a,1234567890,'pK6789',1200)
+# s = Seller('Arezu','Kamrani','Woman' ,'09121234567',a,1234567890,'pK6789',1200)
 # s = Seller(u,[p1,p2])
 # print(s)
 
@@ -338,7 +380,7 @@ class Customer(User):
 # p3 = Product('pencil' , 2000 , 2, ['good','nice','soft'])
 # p4 = Product('eraser' , 5000 , 15, ['good','soft']])
 # p5 = Product('ruler' , 10000 , 20, ['good','nice','long'])
-# s1 = Seller('Arezu','Kamrani','Woman', '09121234567','Rasht',1234567890,456789,1200,'seller',123456)
-# c = Customer('Arezu','Kamrani','Woman', '09121234567','Rasht',1234567890,456789,1200,'customer',123456)
+# s1 = Seller('Arezu','Kamrani','Woman', '09121234567','Rasht',1234567890,'pK6789',1200,'seller',123456)
+# c = Customer('Arezu','Kamrani','Woman', '09121234567','Rasht',1234567890,'pK6789',1200,'customer',123456)
 # print(c) 
 # print(type(c))
