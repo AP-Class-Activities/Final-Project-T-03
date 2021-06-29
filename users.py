@@ -17,7 +17,7 @@ class User:
            
     '''
 
-    def __init__(self, first_name, last_name, sexuality, phone_number, address, postal_code, password, electronic_wallet): # id , type
+    def __init__(self, first_name, last_name, sexuality, phone_number, address, postal_code, password, electronic_wallet):
         
         for i in first_name:
             if i in [str(j) for j in range(0,10)]:
@@ -164,7 +164,7 @@ class Seller(User):
             print(s)
 
     '''
-    def __init__(self, first_name, last_name, sexuality, phone_number, address, postal_code, password, electronic_wallet, product_stock = [], score = []):
+    def __init__(self, first_name, last_name, sexuality, phone_number, address, postal_code, password, electronic_wallet, product_stock = []):
         super(Customer,self).__init__(first_name, last_name, sexuality, phone_number, address, postal_code, password, electronic_wallet, type, id)
 
         for i in product_stock:     # product_stock = [[product1, stock1],[product2, stock2],...]
@@ -172,11 +172,7 @@ class Seller(User):
                 raise ValueError('Product Stock should be a list products and their stocks! Stocks should not be negative!')
         self.__product_stock = product_stock
 
-        score_list=[i for i in range(0,5+1) ]
-        for i in score:
-            if i not in score_list :
-                raise ValueError('Score should be positive, integer and should not be more than five! ')
-        self.__score = score
+        self.__score = []
     
     
     # setter and getter:
