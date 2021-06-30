@@ -5,20 +5,21 @@ You should notice that this class makes access to products easier.
 
 Usage:
    1) Create a new product :
-        p= product(ID, product_name, product_Price, product_discount, comment_list, score)
+        p= product(product_name, product_Price, product_discount)
 
    2) Print the product information:    
         print(p)
         
 '''
 
-from address import Address
+# from random import randint
 
 class Product:
-    def __init__(self, id, name, Price, discount=0, comment_list=[], score=[]) : #, stock=0
-        if id//(10**5) == 0 or id//(10**5) > 10:
-            raise ValueError('id should have 6 digits.')
-        self.__id = id
+    def __init__(self, name, Price, discount=0) :  
+
+        for i in name:
+            if i in [str(j) for j in range(0,10)]:
+                raise ValueError('Name does not include number.')
         self.__name = name
 
         if  Price<=0 :
@@ -29,31 +30,21 @@ class Product:
             raise ValueError('the discount for a product should be in range [0,100).')
         self.__discount = discount
 
-        self.__comment_list = comment_list
+        self.__comment_list = []
 
-        score_list=[i for i in range(0,5+1) ]
-        for i in score:
-            if i not in score_list :
-                raise ValueError('Score should be positive, integer and should not be more than five! ')
-        self.__score = score
+        self.__score = []
 
-    #setters and getters
-    @property
-    def ID(self): 
-        return 'PR' + str(self.__id)
-    
-    @ID.setter
-    def ID(self,value): 
-        if value//(10**5) == 0 or value//(10**5) > 10:
-            raise ValueError('id should have 6 digits.')
-        self.__id = value
+    #setters and getters:
 
     @property
-    def name(self): 
+    def name(self):
         return self.__name
 
     @name.setter
     def name(self,value): 
+        for i in value:
+            if i in [str(j) for j in range(0,10)]:
+                raise ValueError('Name does not include number.')
         self.__name = value
 
     @property
@@ -91,7 +82,7 @@ class Product:
 
     @score.setter
     def score(self,value):
-        score_list=[i for i in range(0,5+1) ]
+        score_list=[i for i in range(0,5+1)]
         if value not in score_list :
             raise ValueError('Score should be positive, integer and should not be more than five! ')
         self.__score = self.score + [value]
@@ -107,17 +98,51 @@ class Product:
         s = 0
         for i in self.score:
             s += i
+        if len(self.score) == 0:
+            return ''
         return s/(len(self.score))
   
     def new_price(self):
         return int(((100-self.discount)*self.Price)/100)
 
     def __str__(self): 
-        return '\n ID: {} \n name: {} \n Price: {} toman  ==> discount: {} % ==> new Price: {} toman \n Comments: {} \n average score: {} \n'\
-            .format(self.ID,self.name, self.Price, self.discount,self.new_price(), self.str_comment(),self.average_score())
+        return '\n name: {} \n Price: {} toman  ==> discount: {} % ==> new Price: {} toman \n Comments: {} \n average score: {} \n'\
+            .format(self.name, self.Price, self.discount,self.new_price(), self.str_comment(),self.average_score())
     
 # example client code:
-# x = Product ( 123456, 'book' , 50000 , 15, ['good','nice'],[4,3,4,2])
+# p = Product ('book' , 50000 , 15)
+
+# x = randint(100000,999999)
+# while 'PR' + str(x) in []:   # ID_list should be made by ID_file :(
+#     x = randint(100000,999999)
+# id = 'PR' + str(x) # 
+# l1 = [p,id]
+
+
+
+
+# l = open('xx.txt','a')
+# l.write(str(l1)+'\n')
+# l.close()
+
+# import pickle
+
+# with open('x.txt', 'wb') as file:
+#     pickle.dump(l1, file)
+
+
+# with open('x.txt', 'rb') as file:
+#     z = pickle.load(file)
+
+# z = open('xx.txt','rb')
+# z.readlines()
+# z = [i.replace('\n',' ').split() for i in z]
+# print(z[0].name)
+# print(z)
+
+
+
+# y = Product ('pencil', 2000, 0)
 # print(x)
 # x.add_comment('useful')
 # print(x.str_comment())

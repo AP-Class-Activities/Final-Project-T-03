@@ -4,19 +4,17 @@ This class has access to the product class, date class, customer class and the s
 
 Usage:
     1) Create a new sale:
-       s = Sale(product,seller,customer,date)
+       s = Sale(product,seller,customer)
     2) Print a sale information:
        print(s)
-
 
 '''
 from Products import Product
 from users import Customer, Seller
 import jdatetime
-from users import Seller
 
 class Sale:
-    def __init__(self, product, seller, customer, date = jdatetime.datetime.now()):
+    def __init__(self, product, seller, customer):
         if type(product) is Product:
             self.__product = product
         else:
@@ -31,6 +29,8 @@ class Sale:
             self.__customer = customer
         else:
             raise ValueError('Customer should be a Customer!')
+
+        self.__date = jdatetime.datetime.now()
 
     # setter and getter
 
@@ -67,13 +67,16 @@ class Sale:
         else:
             raise ValueError('Customer should be a Customer!')
 
+    @property
+    def date(self):
+        return self.__date
 
     def __str__(self):
         return '\n Product:\n' + str(self.product) + '\n Seller:\n' + str(self.seller) + '\n Customer:\n' + str(self.customer) + '\n Date:\n' + str(self.date)
 
-x = Product ( 123456, 'book' , 50000 , 15, ['good','nice'],[4,3,4,2])
-p1 = Product(123456, 'book' , 50000 , 5, ['good','nice'], [4,3])
-p2 = Product(987654, 'pen' , 5000 , 10, ['good','nice'], [4,2])
+# x = Product ('book' , 50000 , 15, ['good','nice'],[4,3,4,2])
+# p1 = Product('book' , 50000 , 5, ['good','nice'], [4,3])
+# p2 = Product('pen' , 5000 , 10, ['good','nice'], [4,2])
 
 # s = Seller('Arezu','Kamrani','09121234567',a,1234567890,456789,1200,'seller',1243,[[p1,2],[p2,1]])
 # s = Sale(p1,)

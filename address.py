@@ -7,10 +7,20 @@
       2) Print the address information:
          print(a)
 '''
+
 class Address:
     def __init__(self, province, city, street, alley, plaque, unit):
+
+        for i in province:
+            if i in [str(j) for j in range(0,10)]:
+                raise ValueError('Province does not include number.')
         self.__province = province
+
+        for i in city:
+            if i in [str(j) for j in range(0,10)]:
+                raise ValueError('City does not include number.')
         self.__city = city
+
         self.__street = street
         self.__alley = alley
         self.__plaque = plaque
@@ -24,6 +34,9 @@ class Address:
 
     @province.setter
     def province(self,value):
+        for i in value:
+            if i in [str(j) for j in range(0,10)]:
+                raise ValueError('Province does not include number.')
         self.__province = value
    
     @property
@@ -32,6 +45,9 @@ class Address:
 
     @city.setter
     def city(self,value):
+        for i in value:
+            if i in [str(j) for j in range(0,10)]:
+                raise ValueError('City does not include number.')
         self.__city = value
    
     @property
