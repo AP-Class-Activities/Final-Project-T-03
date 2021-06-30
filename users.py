@@ -212,11 +212,17 @@ class Seller(User):
         super(Seller,self).__init__(first_name, last_name, sexuality, phone_number, address, postal_code, password, electronic_wallet)
   
         self.__product_stock = []    # product_stock = [[product1, stock1],[product2, stock2],...]
+
+        self.__unverified_product_stock = []
         
         self.__score = []
     
 
     # setter and getter:
+
+    @property
+    def unverified_product_stock(self):
+        return self.__unverified_product_stock
 
     @property
     def score(self):
@@ -232,6 +238,24 @@ class Seller(User):
     @property
     def product_stock(self):
         return self.__product_stock
+
+    def add_unverified_product(self,value):  # value = [product1,stock1]
+        if type(value[0]) is not Product:
+           raise ValueError('Product Stock should be a list products and their stocks!')
+        for i in self.unverified_product_stock:
+            if i[0] == value[0]:
+                if i[1] + value[1] < 0:
+                    raise ValueError('Stock can not be negative!')
+                elif i[1] + value[1] == 0:
+                    self.__unverified_product_stock = self.unverified_product_stock.remove(i)
+                    return
+                else:
+                    j = [i[0],i[1] + value[1]]
+                    self.__unverified_product_stock = self.unverified_product_stock.remove(i) + j
+                    return
+        if value[1] < 0:
+            raise ValueError('stock should be positive!')
+        self.__unverified_product_stock = self.unverified_product_stock + [value]        
 
     def add_product(self,value):  # value = [product1,stock1]
         if type(value[0]) is not Product:
