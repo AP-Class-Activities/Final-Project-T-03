@@ -63,7 +63,7 @@ with open('ID_file.txt', 'w') as file:
 #                 .format(i[0].name)
 #     total_price = 0
 #     for i in customer.shopping_bag:
-#         total_price += i[0].new_price()  
+#         total_price += i[0].new_price() * i[2]
 #     if customer.electronic_wallet > total_price or customer.electronic_wallet == total_price:
 #         customer.electronic_wallet((-1)*total_price)
 #         for i in customer.shopping_bag:
