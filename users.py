@@ -33,8 +33,8 @@ class User:
             raise ValueError('Sexuality should be Man or Woman!')
         self.__sexuality = sexuality
 
-        if len(phone_number)!=11 or phone_number[0]!='0':
-            raise ValueError('The phone number should have 11 digits and start with zero! ')
+        if len(phone_number)!=11 or phone_number[0]!='0' or phone_number[1]!='9':
+            raise ValueError('The phone number should have 11 digits and start with 09!')
         self.__phone_number = phone_number
 
         if type(address) is not Address:
@@ -113,8 +113,8 @@ class User:
 
     @phone_number.setter
     def  phone_number(self,value): 
-       if len(value)!=11 or value[0]!='0':
-            raise ValueError('The phone number should have 11 digits and start with zero! ')
+       if len(value)!=11 or value[0]!='0' or value[1]!='9':
+            raise ValueError('The phone number should have 11 digits and start with 09!')
        self.__phone_number = value
 
     @property
