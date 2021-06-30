@@ -45,7 +45,7 @@ class User:
             raise ValueError('The postal code should have 10 digits! ')
         self.__postal_code = postal_code
 
-        if len(str(password)) < 3 or len(str(password)) > 8:
+        if len(str(password)) < 4 or len(str(password)) > 8:
             raise ValueError('The password should have between 4 and 8 characters.')
         j = 0
         for i in [k for k in '0123456789']:
@@ -143,7 +143,7 @@ class User:
 
     @password.setter
     def  password(self,value):
-        if len(str(value)) < 3 or len(str(value)) > 8:
+        if len(str(value)) < 4 or len(str(value)) > 8:
             raise ValueError('The password should have between 4 and 8 characters. ')
         j = 0
         for i in [k for k in '0123456789']:
